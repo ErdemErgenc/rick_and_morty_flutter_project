@@ -32,11 +32,16 @@ class _CharactersViewsState extends State<CharactersViews> {
                   builder: (context, viewModel, child) {
                     if (viewModel.characterModel == null ||
                         viewModel.characterModel!.isEmpty) {
-                      return const CircularProgressIndicator.adaptive();
+                      return Align(
+                        alignment: Alignment.topCenter,
+                        child: const CircularProgressIndicator.adaptive(),
+                      );
                     } else {
                       return CharacterCardListview(
                         characters:
-                            viewModel.characterModel, // Doğrudan gönderiyoruz.
+                            viewModel.characterModel?.characters, // Doğrudan gönderiyoruz.
+                            onLoadMore:()=> 
+                            viewModel.getCharactersMore(),
                       );
                     }
                   },

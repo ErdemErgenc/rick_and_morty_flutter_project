@@ -6,8 +6,9 @@ import 'package:rick_and_morty/widgets/character_cardview.dart';
 
 class CharacterCardListview extends StatefulWidget {
   final List<CharacterModel>? characters; // Nullable list
+  final VoidCallback onLoadMore;
 
-  const CharacterCardListview({super.key, this.characters}); // const ekledik.
+  const CharacterCardListview({super.key, this.characters, required this.onLoadMore}); // const ekledik.
 
   @override
   State<CharacterCardListview> createState() => _CharacterCardListviewState();
@@ -29,7 +30,7 @@ class _CharacterCardListviewState extends State<CharacterCardListview> {
       const int delta = 200;
 
       if (maxScroll - currentPosition <= delta) {
-        log("Alta geldiniz"); // Burada eksik noktalı virgül eklendi.
+        widget.onLoadMore(); // Metodu çağırıyoruz.
       }
     });
   }

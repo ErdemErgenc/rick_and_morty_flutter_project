@@ -13,6 +13,8 @@ class CharactersModel {
         [];
     return CharactersModel(info: info, characters: characters);
   }
+
+  bool get isEmpty => characters.isEmpty;
 }
 
 class CharacterInfo {

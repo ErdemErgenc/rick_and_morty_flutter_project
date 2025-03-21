@@ -44,20 +44,22 @@ class CharactersViewsModel extends ChangeNotifier {
 }
 
 class CharactersModel {
-   CharacterInfo info;
+  CharacterInfo info;
   final List<CharacterModel> characters;
 
   CharactersModel({required this.info, required this.characters});
 
   factory CharactersModel.fromJson(Map<String, dynamic> json) {
-    final info = CharacterInfo.fromJson(
-      json['info'] ?? {},
-    ); // Null kontrolü ekledik.
+    final info = CharacterInfo.fromJson(json['info'] ?? {});
     final characters =
-        (json['results'] as List?)?.map((charJson) {
-          return CharacterModel.fromJson(charJson);
-        }).toList() ??
-        []; // Eğer 'results' null ise boş bir liste atanır.
+        (json['results'] as List?)
+            ?.map((charJson) => CharacterModel.fromJson(charJson))
+            .toList() ??
+        [];
     return CharactersModel(info: info, characters: characters);
   }
+
+  bool get isEmpty =>
+      characters
+          .isEmpty; // Burada karakter listesinin boşluğunu kontrol ediyoruz.
 }
