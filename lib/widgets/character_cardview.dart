@@ -1,12 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-// ignore: unused_import
-import 'package:rick_and_morty/models/character_model.dart';
+import 'package:rick_and_morty/app/locator.dart';
 import 'package:rick_and_morty/models/characters_model.dart';
+import 'package:rick_and_morty/services/preferences_service.dart';
 
-class CharacterCardView extends StatelessWidget {
+
+// ignore: must_be_immutable
+class CharacterCardView extends StatefulWidget {
   final CharacterModel characterModel;
-  const CharacterCardView({super.key, required this.characterModel, required characters, required bool isFavorited});
+  bool isFavorited;
+  CharacterCardView({
+    super.key,
+    required this.characterModel,
+    this.isFavorited = false,
+  });
+
+  @override
+  State<CharacterCardView> createState() => _CharacterCardViewState();
+}
+
+class _CharacterCardViewState extends State<CharacterCardView> {
+  void _favoriteCharacter() {
+    if (widget.isFavorited) {
+      locator<PreferencesService>().removeCharacter(widget.characterModel.id);
+      widget.isFavorited = false;
+    } else {
+      locator<PreferencesService>().saveCharacter(widget.characterModel.id);
+      widget.isFavorited = true;
+    }
+
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +49,8 @@ class CharacterCardView extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(6),
                   child: Image.network(
-                    characterModel.image ?? '',
-                    height: 110,
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Icon(Icons.error);
-                    },
+                    widget.characterModel.image,
+                    height: 100,
                   ),
                 ),
                 Padding(
@@ -42,19 +62,22 @@ class CharacterCardView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        characterModel.name ?? 'Unknown',
-                        style: GoogleFonts.poppins(fontSize: 14),
+                        widget.characterModel.name,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                      const SizedBox(height: 6),
-                      infoWidget(
-                        type: "Köken",
-                        value: characterModel.origin.name ?? 'Unknown',
+                      const SizedBox(height: 5),
+                      _infoWidget(
+                        type: 'Köken',
+                        value: widget.characterModel.origin.name,
                       ),
                       const SizedBox(height: 4),
-                      infoWidget(
-                        type: "Durum",
+                      _infoWidget(
+                        type: 'Durum',
                         value:
-                            "${characterModel.status ?? 'Unknown'} - ${characterModel.species ?? 'Unknown'}",
+                            '${widget.characterModel.status} - ${widget.characterModel.species}',
                       ),
                     ],
                   ),
@@ -62,25 +85,26 @@ class CharacterCardView extends StatelessWidget {
               ],
             ),
           ),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.bookmark_border)),
+          IconButton(
+            onPressed: _favoriteCharacter,
+            icon: Icon(
+              widget.isFavorited ? Icons.bookmark : Icons.bookmark_border,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Column infoWidget({required String type, required String value}) {
+  Widget _infoWidget({required String type, required String value}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           type,
-          style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.w400),
+          style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w300),
         ),
-        const SizedBox(height: 4),
-        Text(
-          value,
-          style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w600),
-        ),
+        Text(value, style: const TextStyle(fontSize: 12)),
       ],
     );
   }

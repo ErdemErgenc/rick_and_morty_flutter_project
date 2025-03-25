@@ -3,44 +3,39 @@ import 'package:provider/provider.dart';
 import 'package:rick_and_morty/screens/characters_view/characters_views_model.dart';
 import 'package:rick_and_morty/widgets/character_card_listview.dart';
 
-class CharactersViews extends StatefulWidget {
-  const CharactersViews({super.key});
+
+
+class CharactersView extends StatefulWidget {
+  const CharactersView({super.key});
 
   @override
-  State<CharactersViews> createState() => _CharactersViewsState();
+  State<CharactersView> createState() => _CharactersViewState();
 }
 
-class _CharactersViewsState extends State<CharactersViews> {
+class _CharactersViewState extends State<CharactersView> {
   @override
   void initState() {
     super.initState();
-    context.read<CharactersViewsModel>().getCharacters();
+    context.read<CharactersViewmodel>().getCharacters();
   }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<CharactersViewsModel>();
+    final viewModel = context.watch<CharactersViewmodel>();
     return Scaffold(
-      appBar: AppBar(title: const Text('Rick and Morty Karakterleri')),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 9),
           child: Column(
             children: [
               _searchInputWidget(context, viewModel: viewModel),
-              Expanded(
-                child:
-                    viewModel.characterModel == null ||
-                            viewModel.characterModel!.isEmpty
-                        ? Align(
-                          alignment: Alignment.topCenter,
-                          child: const CircularProgressIndicator.adaptive(),
-                        )
-                        : CharacterCardListview(
-                          characters: viewModel.characterModel?.characters,
-                          onLoadMore: () => viewModel.getCharactersMore(),
-                        ),
-              ),
+              viewModel.charactersModel == null
+                  ? const CircularProgressIndicator.adaptive()
+                  : CharacterCardListView(
+                    characters: viewModel.charactersModel!.characters,
+                    onLoadMore: () => viewModel.getCharactersMore(),
+                    loadMore: viewModel.loadMore,
+                  ),
             ],
           ),
         ),
@@ -50,7 +45,7 @@ class _CharactersViewsState extends State<CharactersViews> {
 
   Widget _searchInputWidget(
     BuildContext context, {
-    required CharactersViewsModel viewModel,
+    required CharactersViewmodel viewModel,
   }) {
     return Padding(
       padding: const EdgeInsets.only(top: 12, bottom: 16),
@@ -58,13 +53,14 @@ class _CharactersViewsState extends State<CharactersViews> {
         textInputAction: TextInputAction.search,
         onFieldSubmitted: viewModel.getCharactersByName,
         decoration: InputDecoration(
-          hintText: 'Karakter Ara',
+          hintText: 'Karakterlerde Ara',
+          hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+          border: const OutlineInputBorder(),
           prefixIcon: const Icon(Icons.search),
           suffixIcon: IconButton(
             onPressed: () {},
             icon: const Icon(Icons.more_vert),
           ),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
     );
