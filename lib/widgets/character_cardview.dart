@@ -3,7 +3,6 @@ import 'package:rick_and_morty/app/locator.dart';
 import 'package:rick_and_morty/models/characters_model.dart';
 import 'package:rick_and_morty/services/preferences_service.dart';
 
-
 // ignore: must_be_immutable
 class CharacterCardView extends StatefulWidget {
   final CharacterModel characterModel;
@@ -50,7 +49,7 @@ class _CharacterCardViewState extends State<CharacterCardView> {
                   borderRadius: BorderRadius.circular(6),
                   child: Image.network(
                     widget.characterModel.image,
-                    height: 100,
+                    height: 120,
                   ),
                 ),
                 Padding(
