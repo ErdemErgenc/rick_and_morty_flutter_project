@@ -4,8 +4,6 @@ import 'package:rick_and_morty/screens/characters_view/characters_view.dart';
 import 'package:rick_and_morty/screens/characters_view/characters_views_model.dart';
 import 'package:rick_and_morty/views/app_view.dart';
 import 'package:provider/provider.dart';
-// ignore: unused_import
-import 'package:rick_and_morty/views/screens/characters_views.dart';
 import 'package:rick_and_morty/screens/favourites_views.dart';
 import 'package:rick_and_morty/screens/locations_views.dart';
 import 'package:rick_and_morty/screens/sections_views.dart';
@@ -13,10 +11,10 @@ import 'package:rick_and_morty/screens/sections_views.dart';
 final routerKey = GlobalKey<NavigatorState>();
 
 class AppRoutes {
-  static String characters = '/';
-  static String favorites = '/favorites';
-  static String locations = '/locations';
-  static String sections = '/sections';
+  static const String characters = '/';
+  static const String favorites = '/favorites';
+  static const String locations = '/locations';
+  static const String sections = '/sections';
 }
 
 final router = GoRouter(
@@ -32,10 +30,11 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.characters,
-              builder: (context, state) => ChangeNotifierProvider(
-                create: (context) => CharactersViewsModel(),
-                child: CharactersViews(),
-              ),
+              builder:
+                  (context, state) => ChangeNotifierProvider(
+                    create: (context) => CharactersViewsModel(),
+                    child: CharactersViews(),
+                  ),
             ),
           ],
         ),
@@ -43,7 +42,7 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.favorites,
-              builder: (context, state) => FavouritesViews(),
+              builder: (context, state) => const FavouritesViews(),
             ),
           ],
         ),
@@ -51,7 +50,7 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.locations,
-              builder: (context, state) => LocationsViews(),
+              builder: (context, state) => const LocationsViews(),
             ),
           ],
         ),
@@ -59,7 +58,7 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.sections,
-              builder: (context, state) => SectionsViews(),
+              builder: (context, state) => const SectionsViews(),
             ),
           ],
         ),

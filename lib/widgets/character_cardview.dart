@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+// ignore: unused_import
 import 'package:rick_and_morty/models/character_model.dart';
 import 'package:rick_and_morty/models/characters_model.dart';
 
 class CharacterCardView extends StatelessWidget {
   final CharacterModel characterModel;
-  const CharacterCardView({super.key, required this.characterModel, required characters});
+  const CharacterCardView({super.key, required this.characterModel, required characters, required bool isFavorited});
 
   @override
   Widget build(BuildContext context) {

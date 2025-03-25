@@ -19,6 +19,7 @@ class _CharactersViewsState extends State<CharactersViews> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<CharactersViewsModel>();
     return Scaffold(
       appBar: AppBar(title: const Text('Rick and Morty Karakterleri')),
       body: Center(
@@ -26,26 +27,19 @@ class _CharactersViewsState extends State<CharactersViews> {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
-              const SearchInputWidget(), // Arama bileşeni
+              _searchInputWidget(context, viewModel: viewModel),
               Expanded(
-                child: Consumer<CharactersViewsModel>(
-                  builder: (context, viewModel, child) {
-                    if (viewModel.characterModel == null ||
-                        viewModel.characterModel!.isEmpty) {
-                      return Align(
-                        alignment: Alignment.topCenter,
-                        child: const CircularProgressIndicator.adaptive(),
-                      );
-                    } else {
-                      return CharacterCardListview(
-                        characters:
-                            viewModel.characterModel?.characters, // Doğrudan gönderiyoruz.
-                            onLoadMore:()=> 
-                            viewModel.getCharactersMore(),
-                      );
-                    }
-                  },
-                ),
+                child:
+                    viewModel.characterModel == null ||
+                            viewModel.characterModel!.isEmpty
+                        ? Align(
+                          alignment: Alignment.topCenter,
+                          child: const CircularProgressIndicator.adaptive(),
+                        )
+                        : CharacterCardListview(
+                          characters: viewModel.characterModel?.characters,
+                          onLoadMore: () => viewModel.getCharactersMore(),
+                        ),
               ),
             ],
           ),
@@ -53,16 +47,16 @@ class _CharactersViewsState extends State<CharactersViews> {
       ),
     );
   }
-}
 
-class SearchInputWidget extends StatelessWidget {
-  const SearchInputWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _searchInputWidget(
+    BuildContext context, {
+    required CharactersViewsModel viewModel,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(top: 12, bottom: 16),
-      child: TextField(
+      child: TextFormField(
+        textInputAction: TextInputAction.search,
+        onFieldSubmitted: viewModel.getCharactersByName,
         decoration: InputDecoration(
           hintText: 'Karakter Ara',
           prefixIcon: const Icon(Icons.search),

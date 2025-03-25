@@ -9,6 +9,13 @@ class CharactersViewsModel extends ChangeNotifier {
   CharactersModel? _characterModel;
   CharactersModel? get characterModel => _characterModel;
 
+  void clearCharacters() {
+
+    _characterModel = null;
+    
+    notifyListeners();
+  }
+
   void getCharacters() async {
     _characterModel = await _apiService.getCharacters();
     notifyListeners();
@@ -27,6 +34,12 @@ class CharactersViewsModel extends ChangeNotifier {
     _characterModel!.info = data.info;
     _characterModel!.characters.addAll(data.characters);
 
+    notifyListeners();
+  }
+
+  void getCharactersByName(String name) async {
+    clearCharacters();
+    _characterModel = await _apiService.getCharacters(args: {'name': name});
     notifyListeners();
   }
 }
