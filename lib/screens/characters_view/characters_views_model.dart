@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rick_and_morty/app/locator.dart';
 import 'package:rick_and_morty/models/characters_model.dart';
 import 'package:rick_and_morty/services/api_service.dart';
-
-
+ 
 class CharactersViewmodel extends ChangeNotifier {
   final _apiService = locator<ApiService>();
 

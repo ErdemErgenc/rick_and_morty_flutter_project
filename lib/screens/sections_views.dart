@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-class SectionsViews extends StatelessWidget {
-  const SectionsViews({super.key});
+class SectionsView extends StatelessWidget {
+  // 'SectionsViews' yerine 'SectionsView'
+  const SectionsView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text("Bölümler"));
+    return const Center(child: Text("Bölümler"));
   }
 }
