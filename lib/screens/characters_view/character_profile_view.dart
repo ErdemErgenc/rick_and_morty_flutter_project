@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rick_and_morty/models/character_model.dart';
-import 'package:rick_and_morty/models/characters_model.dart';
 import 'package:rick_and_morty/models/episode_model.dart';
 import 'package:rick_and_morty/widgets/appvar_widget.dart';
 import 'package:rick_and_morty/widgets/decorated_container.dart';
