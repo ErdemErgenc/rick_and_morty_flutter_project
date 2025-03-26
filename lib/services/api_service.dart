@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:rick_and_morty/models/character_model.dart';
 import 'package:rick_and_morty/models/characters_model.dart';
 import 'package:rick_and_morty/models/episode_model.dart';
 import 'package:rick_and_morty/models/location_model.dart';

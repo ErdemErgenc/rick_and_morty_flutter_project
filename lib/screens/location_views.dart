@@ -5,6 +5,7 @@ import 'package:rick_and_morty/screens/location_viewmodel.dart';
 import 'package:rick_and_morty/widgets/appvar_widget.dart';
 import 'package:rick_and_morty/widgets/decorated_container.dart';
  
+
 class LocationsView extends StatefulWidget {
   const LocationsView({super.key});
 

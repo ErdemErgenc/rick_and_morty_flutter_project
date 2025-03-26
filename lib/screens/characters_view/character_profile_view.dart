@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rick_and_morty/models/character_model.dart';
 import 'package:rick_and_morty/models/characters_model.dart';
 import 'package:rick_and_morty/models/episode_model.dart';
 import 'package:rick_and_morty/widgets/appvar_widget.dart';
@@ -20,7 +21,7 @@ class _CharacterProfileViewState extends State<CharacterProfileView> {
   void initState() {
     super.initState();
     context.read<CharacterProfileViewmodel>().getEpisodes(
-      widget.characterModel.episodes,
+      widget.characterModel.episode,
     );
   }
 
@@ -52,17 +53,10 @@ class _CharacterProfileViewState extends State<CharacterProfileView> {
     );
   }
 
-  // Expanded yerine Flexible kullanımı
-  Expanded _episodeListView() {
-    return Expanded(
-      // Flexible yerine Expanded kullandım
+  Flexible _episodeListView() {
+    return Flexible(
       child: Consumer<CharacterProfileViewmodel>(
         builder: (context, viewModel, child) {
-          if (viewModel.episodes.isEmpty) {
-            // Eğer episode listesi boşsa
-            return Center(child: Text("Bölüm bulunamadı")); // Yedek mesaj
-          }
-
           return ListView.separated(
             padding: EdgeInsets.zero,
             itemCount: viewModel.episodes.length,
@@ -106,7 +100,7 @@ class _CharacterProfileViewState extends State<CharacterProfileView> {
       alignment: Alignment.centerLeft,
       padding: const EdgeInsets.symmetric(horizontal: 18),
       child: Text(
-        'Bölümler (${widget.characterModel.episodes.length})',
+        'Bölümler (${widget.characterModel.episode.length})',
         style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
       ),
     );
@@ -144,10 +138,10 @@ class _CharacterProfileViewState extends State<CharacterProfileView> {
     return Padding(
       padding: const EdgeInsets.only(top: 90, bottom: 52),
       child: CircleAvatar(
-        radius: 100,
+        radius: 102,
         backgroundColor: Theme.of(context).colorScheme.primary,
         child: CircleAvatar(
-          radius: 98,
+          radius: 97,
           backgroundColor: Theme.of(context).colorScheme.surface,
           child: Hero(
             tag: widget.characterModel.image,

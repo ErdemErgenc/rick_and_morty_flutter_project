@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/app/locator.dart';
-import 'package:rick_and_morty/models/characters_model.dart';
+import 'package:rick_and_morty/models/character_model.dart';
 import 'package:rick_and_morty/services/api_service.dart';
  
+
 class CharactersViewmodel extends ChangeNotifier {
   final _apiService = locator<ApiService>();
 
@@ -16,7 +17,7 @@ class CharactersViewmodel extends ChangeNotifier {
   }
 
   void getCharacters() async {
-    _charactersModel = await _apiService.getCharacters();
+    _charactersModel = (await _apiService.getCharacters()) as CharactersModel?;
     notifyListeners();
   }
 
@@ -51,7 +52,7 @@ class CharactersViewmodel extends ChangeNotifier {
 
   void getCharactersByName(String name) async {
     clearCharacters();
-    _charactersModel = await _apiService.getCharacters(args: {'name': name});
+    _charactersModel = (await _apiService.getCharacters(args: {'name': name})) as CharactersModel?;
     notifyListeners();
   }
 }

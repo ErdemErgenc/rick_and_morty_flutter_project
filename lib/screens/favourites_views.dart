@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:rick_and_morty/screens/characters_view/favourites_viewsmodel.dart';
 import 'package:rick_and_morty/widgets/appvar_widget.dart';
 import 'package:rick_and_morty/widgets/character_card_listview.dart';
-
+ 
 
 class FavouritesView extends StatefulWidget {
   const FavouritesView({super.key});
@@ -32,7 +32,7 @@ class _FavouritesViewState extends State<FavouritesView> {
                   ? const CircularProgressIndicator.adaptive()
                   : Column(
                     children: [
-                      CharacterCardListView(characters: viewModel.characters, onLoadMore: () {  },),
+                      CharacterCardListView(characters: viewModel.characters),
                     ],
                   ),
         ),

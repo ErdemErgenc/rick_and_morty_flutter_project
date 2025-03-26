@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/app/locator.dart';
+import 'package:rick_and_morty/models/character_model.dart';
 import 'package:rick_and_morty/models/characters_model.dart';
 import 'package:rick_and_morty/services/api_service.dart';
 import 'package:rick_and_morty/services/preferences_service.dart';
-
-
+ 
 class FavouritesViewmodel extends ChangeNotifier {
   final _preferencesService = locator<PreferencesService>();
   final _apiService = locator<ApiService>();

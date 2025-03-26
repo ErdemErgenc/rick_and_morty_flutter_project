@@ -1,46 +1,24 @@
-// TODO Implement this library.
-import 'package:flutter/cupertino.dart';
-import 'package:rick_and_morty/app/locator.dart';
-import 'package:rick_and_morty/models/characters_model.dart';
-import 'package:rick_and_morty/services/api_service.dart';
+class CharacterInfo {
+  final int count;
+  final int pages;
+  final String? next;
+  final String? prev;
 
-class CharactersViewsModel extends ChangeNotifier {
-  final _apiService = locator<ApiService>();
+  CharacterInfo({
+    required this.count,
+    required this.pages,
+    this.next,
+    this.prev,
+  });
 
-  List<CharacterModel>? _characterModel;
-  List<CharacterModel>? get characterModel => _characterModel;
-
-  void getCharacters() async {
-    final charactersModel = await _apiService.getCharacters(url: null);
-    _characterModel = charactersModel.characters;
-    notifyListeners();
-  }
-
-  bool loadMore = false;
-
-  void getCharactersMore() async {
-    if (loadMore) return;
-
-    // Check if _characterModel or its 'info' is null
-    if (_characterModel == null ||
-        _characterModel!.isEmpty ||
-        _characterModel!.first.info == null ||
-        _characterModel!.first.info.next == null) {
-      return; // Don't load more if there's no next page
-    }
-
-    loadMore = true;
-    final data = await _apiService.getCharacters(
-      url: _characterModel?.first.info?.next, // Safely access the next URL
+  factory CharacterInfo.fromJson(Map<String, dynamic> json) {
+    return CharacterInfo(
+      count: json['count'],
+      pages: json['pages'],
+      next: json['next'],
+      prev: json['prev'],
     );
-    loadMore = false;
-
-    // Merge the new data with the existing data
-    _characterModel = [...?_characterModel, ...data.characters];
-    notifyListeners();
   }
-  
-  void notifyListeners() {}
 }
 
 class CharactersModel {
@@ -59,7 +37,65 @@ class CharactersModel {
     return CharactersModel(info: info, characters: characters);
   }
 
-  bool get isEmpty =>
-      characters
-          .isEmpty; // Burada karakter listesinin boşluğunu kontrol ediyoruz.
+  bool get isEmpty => characters.isEmpty;
+}
+
+class CharacterModel {
+  final int id;
+  final String name;
+  final String status;
+  final String species;
+  final String gender;
+  final String image;
+  final Location location;
+  final Origin origin;
+  final List<String> episode;
+
+  CharacterModel({
+    required this.id,
+    required this.name,
+    required this.status,
+    required this.species,
+    required this.gender,
+    required this.image,
+    required this.location,
+    required this.origin,
+    required this.episode,
+  });
+
+  factory CharacterModel.fromJson(Map<String, dynamic> json) {
+    return CharacterModel(
+      id: json['id'],
+      name: json['name'],
+      status: json['status'],
+      species: json['species'],
+      gender: json['gender'],
+      image: json['image'],
+      location: Location.fromJson(json['location']),
+      origin: Origin.fromJson(json['origin']),
+      episode: List<String>.from(json['episode']),
+    );
+  }
+}
+
+class Location {
+  final String name;
+  final String url;
+
+  Location({required this.name, required this.url});
+
+  Location.fromJson(Map<String, dynamic> json)
+    : name = json['name'],
+      url = json['url'];
+}
+
+class Origin {
+  final String name;
+  final String url;
+
+  Origin({required this.name, required this.url});
+
+  Origin.fromJson(Map<String, dynamic> json)
+    : name = json['name'],
+      url = json['url'];
 }

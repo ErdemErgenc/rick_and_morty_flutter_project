@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:rick_and_morty/models/characters_model.dart';
+import 'package:rick_and_morty/models/character_model.dart';
+import 'package:rick_and_morty/models/characters_model.dart' as model;
 import 'package:rick_and_morty/screens/characters_view/character_profile_view.dart';
 import 'package:rick_and_morty/screens/characters_view/character_profile_viewmodel.dart';
 import 'package:rick_and_morty/screens/characters_view/characters_view.dart';
 import 'package:rick_and_morty/screens/characters_view/characters_views_model.dart';
+import 'package:rick_and_morty/screens/characters_view/characters_views_model.dart' as charactersViewmodel;
 import 'package:rick_and_morty/screens/characters_view/favourites_viewsmodel.dart';
 import 'package:rick_and_morty/screens/favourites_views.dart';
 import 'package:rick_and_morty/screens/location_viewmodel.dart';
 import 'package:rick_and_morty/screens/location_views.dart';
 import 'package:rick_and_morty/screens/sections_views.dart';
 import 'package:rick_and_morty/views/app_view.dart';
-
-// Doğru import yapıldı
-
 
 final _routerKey = GlobalKey<NavigatorState>();
 
@@ -45,7 +44,7 @@ final router = GoRouter(
               path: AppRoutes.characters,
               builder:
                   (context, state) => ChangeNotifierProvider(
-                    create: (context) => CharactersViewmodel(),
+                    create: (context) => charactersViewmodel.CharactersViewmodel(),
                     child: const CharactersView(),
                   ),
               routes: [
@@ -91,9 +90,7 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.sections,
-              builder:
-                  (context, state) =>
-                      const SectionsView(), // Buradaki yönlendirme doğru sınıf ismiyle
+              builder: (context, state) => const SectionsView(),
             ),
           ],
         ),

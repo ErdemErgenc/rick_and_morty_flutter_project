@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AppView extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
@@ -9,13 +8,10 @@ class AppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: app_bar_widget(),
       body: navigationShell,
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
-          labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>((
-            Set<WidgetState> states,
-          ) {
+          labelTextStyle: WidgetStateTextStyle.resolveWith((states) {
             if (states.contains(WidgetState.selected)) {
               return TextStyle(color: Theme.of(context).colorScheme.primary);
             }
@@ -24,36 +20,36 @@ class AppView extends StatelessWidget {
         ),
         child: NavigationBar(
           selectedIndex: navigationShell.currentIndex,
-          onDestinationSelected: navigationShell.goBranch,
           indicatorColor: Colors.transparent,
+          onDestinationSelected: navigationShell.goBranch,
           destinations: [
-            menuItem(
+            _menuItem(
               context,
-              0,
-              navigationShell.currentIndex,
-              Icons.face,
-              'Karakterler',
+              index: 0,
+              currentIndex: navigationShell.currentIndex,
+              icon: Icons.face,
+              label: 'Karakterler',
             ),
-            menuItem(
+            _menuItem(
               context,
-              1,
-              navigationShell.currentIndex,
-              Icons.bookmark,
-              'Favorilerim',
+              index: 1,
+              currentIndex: navigationShell.currentIndex,
+              icon: Icons.bookmark,
+              label: 'Favorilerim',
             ),
-            menuItem(
+            _menuItem(
               context,
-              2,
-              navigationShell.currentIndex,
-              Icons.location_on,
-              'Konumlar',
+              index: 2,
+              currentIndex: navigationShell.currentIndex,
+              icon: Icons.location_on,
+              label: 'Konumlar',
             ),
-            menuItem(
+            _menuItem(
               context,
-              3,
-              navigationShell.currentIndex,
-              Icons.menu,
-              'Menü',
+              index: 3,
+              currentIndex: navigationShell.currentIndex,
+              icon: Icons.menu,
+              label: 'Bölümler',
             ),
           ],
         ),
@@ -61,13 +57,13 @@ class AppView extends StatelessWidget {
     );
   }
 
-  Widget menuItem(
-    BuildContext context,
-    int index,
-    int currentIndex,
-    IconData icon,
-    String label,
-  ) {
+  Widget _menuItem(
+    BuildContext context, {
+    required int index,
+    required int currentIndex,
+    required String label,
+    required IconData icon,
+  }) {
     return NavigationDestination(
       icon: Icon(
         icon,
@@ -77,20 +73,6 @@ class AppView extends StatelessWidget {
                 : Theme.of(context).colorScheme.tertiary,
       ),
       label: label,
-    );
-  }
-
-  AppBar app_bar_widget() {
-    return AppBar(
-      title: Text(
-        "Rick and Morty",
-        style: GoogleFonts.inter(
-          fontSize: 22,
-          fontWeight: FontWeight.w500,
-          color: Color(0xFF414A4C),
-        ),
-      ),
-      actions: [IconButton(icon: Icon(Icons.settings), onPressed: () {})],
     );
   }
 }
