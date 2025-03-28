@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:rick_and_morty/app/locator.dart';
 import 'package:rick_and_morty/models/character_model.dart';
 import 'package:rick_and_morty/services/api_service.dart';
- 
+
+
+enum CharacterType { all, alive, dead, unknown }
 
 class CharactersViewmodel extends ChangeNotifier {
   final _apiService = locator<ApiService>();
+
+  CharacterType characterType = CharacterType.all;
 
   CharactersModel? _charactersModel;
   CharactersModel? get charactersModel => _charactersModel;
@@ -17,7 +21,7 @@ class CharactersViewmodel extends ChangeNotifier {
   }
 
   void getCharacters() async {
-    _charactersModel = (await _apiService.getCharacters()) as CharactersModel?;
+    _charactersModel = await _apiService.getCharacters();
     notifyListeners();
   }
 
@@ -52,7 +56,20 @@ class CharactersViewmodel extends ChangeNotifier {
 
   void getCharactersByName(String name) async {
     clearCharacters();
-    _charactersModel = (await _apiService.getCharacters(args: {'name': name})) as CharactersModel?;
+    _charactersModel = await _apiService.getCharacters(args: {'name': name});
+    notifyListeners();
+  }
+
+  void onCharacterTypeChanged(CharacterType type) async {
+    characterType = type;
+    clearCharacters();
+
+    Map<String, dynamic>? args;
+    if (type != CharacterType.all) {
+      args = {'status': type.name};
+    }
+
+    _charactersModel = await _apiService.getCharacters(args: args);
     notifyListeners();
   }
 }

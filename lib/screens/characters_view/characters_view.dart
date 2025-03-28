@@ -4,7 +4,6 @@ import 'package:rick_and_morty/screens/characters_view/characters_views_model.da
 import 'package:rick_and_morty/widgets/appvar_widget.dart';
 import 'package:rick_and_morty/widgets/character_card_listview.dart';
 
-
 class CharactersView extends StatefulWidget {
   const CharactersView({super.key});
 
@@ -16,12 +15,17 @@ class _CharactersViewState extends State<CharactersView> {
   @override
   void initState() {
     super.initState();
-    context.read<CharactersViewmodel>().getCharacters();
+
+    // Widget ağacı yüklendikten sonra ViewModel'den karakterleri getir
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<CharactersViewmodel>().getCharacters();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<CharactersViewmodel>();
+    final viewModel = context.watch<CharactersViewmodel>(); // ViewModel'i izle
+
     return Scaffold(
       appBar: const AppBarWidget(title: 'Rick and Morty'),
       body: Center(
@@ -31,7 +35,7 @@ class _CharactersViewState extends State<CharactersView> {
             children: [
               _searchInputWidget(context, viewModel: viewModel),
               viewModel.charactersModel == null
-                  ? const CircularProgressIndicator.adaptive()
+                  ? const CircularProgressIndicator.adaptive() // Yükleniyor animasyonu
                   : CharacterCardListView(
                     characters: viewModel.charactersModel!.characters,
                     onLoadMore: () => viewModel.getCharactersMore(),
@@ -58,9 +62,19 @@ class _CharactersViewState extends State<CharactersView> {
           hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
           border: const OutlineInputBorder(),
           prefixIcon: const Icon(Icons.search),
-          suffixIcon: IconButton(
-            onPressed: () {},
+          suffixIcon: PopupMenuButton(
             icon: const Icon(Icons.more_vert),
+            onSelected: viewModel.onCharacterTypeChanged,
+            itemBuilder: (context) {
+              return CharacterType.values
+                  .map(
+                    (e) => PopupMenuItem<CharacterType>(
+                      value: e,
+                      child: Text(e.name),
+                    ),
+                  )
+                  .toList();
+            },
           ),
         ),
       ),
